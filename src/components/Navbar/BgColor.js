@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 
@@ -18,15 +18,7 @@ const Button = styled.button`
     cursor: pointer;
 `
 
-const BgColor = ({bgColor, setBgColor}) => {
-
-  /*
-   * The second argument that will be passed to
-   * `handleChange` from `ToggleButtonGroup`
-   * is the SyntheticEvent object, but we are
-   * not using it in this example so we will omit it.
-   */
-
+const BgColor = ({setBgColor}) => {
   return (
     <>
         <ButtonGroup>

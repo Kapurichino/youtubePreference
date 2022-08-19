@@ -15,17 +15,18 @@ const Container = styled.div`
 `
 
 function App() {
+  // const [input, setInput] = useState("");
   const [bgColor, setBgColor] = useState(1);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   return (
     <>
-      {console.log(open)}
+      {/* {console.log(open)} */}
       <Container BgColor={bgColor}>
-        {open === true ? <KeyWordModal setOpen={setOpen}/> : null}
+        {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}
         <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
         
         {/* <Header/> */}
-        <Body setOpen={setOpen}/>
+        <Body/>
         <Footer/>
       </Container>
     </>
