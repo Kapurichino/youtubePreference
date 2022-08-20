@@ -9,8 +9,7 @@ import Navbar from './components/Navbar/Navbar';
 
 const Container = styled.div`
   width:100%;
-  height:1000px;
-  position: relative;
+  padding: 1px;
   background-color: ${({BgColor})=>(BgColor===1?"white":"rgb(36, 36, 36)")};
 `
 
@@ -21,10 +20,9 @@ function App() {
   return (
     <>
       {/* {console.log(open)} */}
+      <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
       <Container BgColor={bgColor}>
-        {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}
-        <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
-        
+        {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}  
         {/* <Header/> */}
         <Body/>
         <Footer/>

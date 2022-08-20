@@ -1,3 +1,17 @@
+.swiper-pagination {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swiper-pagination-bullet{
+    padding: 10px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+}
+
+
 
 .swiper-wrapper {
     height:300px;
@@ -5,4 +19,7 @@
 
 .swiper-slide{
     padding: 30px;
+    height: 80%;
+    background-color: aliceblue;
+
 }
