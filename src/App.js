@@ -8,9 +8,13 @@ import KeyWordModal from './components/KeyWordModal';
 import Navbar from './components/Navbar/Navbar';
 
 const Container = styled.div`
+
+
   width:100%;
-  padding: 1px;
+
+  padding-top: 1px;
   background-color: ${({BgColor})=>(BgColor===1?"white":"rgb(36, 36, 36)")};
+  transition: 0.3s ease-in-out;
 `
 
 function App() {
@@ -24,7 +28,7 @@ function App() {
       <Container BgColor={bgColor}>
         {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}  
         {/* <Header/> */}
-        <Body/>
+        <Body bgColor={bgColor}/>
         <Footer/>
       </Container>
     </>
