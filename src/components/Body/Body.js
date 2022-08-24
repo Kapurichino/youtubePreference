@@ -119,7 +119,15 @@ const Body = ({bgColor}) => {
    */
   const removeData = (index) =>{
     localStorage.removeItem(`keyword${index}`);
+    for(let x = index+1; x < cnt; x++){
+      localStorage.setItem(`keyword${x-1}`, JSON.stringify(JSON.parse(localStorage.getItem(`keyword${x}`))));
+    }
+    localStorage.removeItem(`keyword${cnt-1}`);
     localStorage.removeItem(`keywordData${index}`);
+    for(let x = index+1; x < cnt; x++){
+      localStorage.setItem(`keywordData${x-1}`, JSON.stringify(JSON.parse(localStorage.getItem(`keywordData${x}`))));
+    }
+    localStorage.removeItem(`keywordData${cnt-1}`);
     (cnt-1) > 0 ? localStorage.setItem('count', JSON.stringify(cnt-1)) : localStorage.removeItem('count');
     keywordArray.splice(index,1);
     apiData.splice(index,1);
