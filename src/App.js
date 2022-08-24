@@ -15,17 +15,12 @@ const Container = styled.div`
 
 function App() {
   // const [input, setInput] = useState("");
-  const [bgColor, setBgColor] = useState(2);
+  const bgData = JSON.parse(localStorage.getItem('bgColor'));
+  const [bgColor, setBgColor] = useState(bgData);
   let scroll = Scroll.animateScroll;
   useEffect(()=>{
-    if(bgColor !== 2)
-      localStorage.setItem('bgColor', JSON.stringify(bgColor));
+    localStorage.setItem('bgColor', JSON.stringify(bgColor));
   },[bgColor]);
-  useEffect(()=>{
-    let bgData = JSON.parse(localStorage.getItem('bgColor'))
-    if (bgData !== null)
-      setBgColor(bgData);
-  },[]);
   // const [open, setOpen] = useState(false);
   return (
     <>
