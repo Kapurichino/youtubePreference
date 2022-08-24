@@ -5,14 +5,20 @@
  * 3. 스와이퍼에서 유튜브를 틀고 있는 상태에서 넘길 때, 동영상 정지 처리.
  */
 
-import React, { lazy, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import {FaTrash} from 'react-icons/fa'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import "swiper/swiper.scss"
+import 'swiper/components/pagination/pagination.scss'
+import SwiperCore, { 
+  Pagination,
+} from "swiper";
 import "./Body.css"
 import axios from 'axios'
+
+SwiperCore.use([Pagination]);
 
 const keywordArray = [];
 const apiData = [];
@@ -199,10 +205,13 @@ const Body = ({bgColor}) => {
                       <Title>{list}</Title> <TrashIcon onClick={()=>{removeData(index);}}/>
                     </Text> 
                     <Swiper
+                    pagination={{
+                      dynamicBullets: true,
+                      clickable: true,
+                    }}
                     spaceBetween={30}
                     slidesPerView={"auto"}
                     slidesPerGroup={1}
-                    loop={true}
                     breakpoints={{
                       0:{
                         slidesPerView:1,
@@ -221,7 +230,7 @@ const Body = ({bgColor}) => {
                         apiData[index].map((apiData, index)=>{
                           return(
                               <SwiperSlide key={index}>
-                                <iframe src={`https://www.youtube.com/embed/${apiData.id.videoId}`} title={apiData.snippet.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}  loading={lazy} style={{width:'100%', height:'80%'}}></iframe>
+                                <iframe src={`https://www.youtube.com/embed/${apiData.id.videoId}`} loading="lazy" title={apiData.snippet.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} style={{width:'100%', height:'80%'}}></iframe>
                               </SwiperSlide>
                           )
                         })

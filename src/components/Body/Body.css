@@ -1,14 +1,16 @@
-.swiper-pagination {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .swiper-pagination-bullet{
     padding: 10px;
-    padding-bottom: 20px;
-    border-radius: 5px;
+    padding-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgb(187, 186, 186);
+}
+
+.swiper-pagination-bullet-active{
+    background-color: rgba(41, 39, 39, 0.904);
+}
+
+.swiper-pagination{
+    padding:5px;
 }
 
 
@@ -19,7 +21,7 @@
 
 .swiper-slide{
     padding: 15px;
-    border-top: 5px solid rgb(233, 122, 122);
+    border-top: 5px solid rgb(16, 243, 213);
     border-radius: 5px;
     background-color: aliceblue;
 

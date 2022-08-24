@@ -1,29 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import './App.css';
 import Body from './components/Body/Body';
 import Footer from './components/Footer/Footer';
-import Header from './components/Header/Header';
-import KeyWordModal from './components/KeyWordModal';
 import Navbar from './components/Navbar/Navbar';
+import ScrollTop from './components/ScrollTop';
+import * as Scroll from 'react-scroll';
 
 const Container = styled.div`
-
-
   width:100%;
-
   padding-top: 1px;
   background-color: ${({BgColor})=>(BgColor===1?"white":"rgb(36, 36, 36)")};
-  transition: 0.3s ease-in-out;
 `
 
 function App() {
   // const [input, setInput] = useState("");
-  const [bgColor, setBgColor] = useState(1);
+  const [bgColor, setBgColor] = useState(2);
+  let scroll = Scroll.animateScroll;
+  useEffect(()=>{
+    if(bgColor !== 2)
+      localStorage.setItem('bgColor', JSON.stringify(bgColor));
+  },[bgColor]);
+  useEffect(()=>{
+    let bgData = JSON.parse(localStorage.getItem('bgColor'))
+    if (bgData !== null)
+      setBgColor(bgData);
+  },[]);
   // const [open, setOpen] = useState(false);
   return (
     <>
       {/* {console.log(open)} */}
+      <ScrollTop scroll={scroll}/>
       <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
       <Container BgColor={bgColor}>
         {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}  

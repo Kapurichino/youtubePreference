@@ -44,7 +44,7 @@ const Footer = () => {
         <FooterWrapper>
           <GithubIcon onClick={()=>{window.open('https://github.com/Kapurichino', '_blank')}}/>
           <MailIcon onClick={()=>{window.location = 'mailto:bsw9698@gmail.com'}}/>
-          <Text>ⓒ 2022 Kapurichino. All Rights Reserved. </Text>
+          <Text>ⓒ 2022 Kapurichino. All Rights Reserved.</Text>
         </FooterWrapper>
       </FooterContainer>
     </>

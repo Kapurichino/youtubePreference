@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import BgColor from './BgColor'
 
@@ -27,6 +27,7 @@ const NavbarName= styled.h1`
 `
 
 const Navbar = ({bgColor, setBgColor})=> {
+
   return (
     <>
       <NavbarContainer navColor={bgColor}>
