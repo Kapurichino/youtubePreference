@@ -1,4 +1,11 @@
-import React, { useEffect, useState } from 'react'
+/**
+ * @todo 
+ * 1. 속도 향상.
+ * 2. 스와이퍼에 로딩창 구현 후 순차적으로 처리.
+ * 3. 스와이퍼에서 유튜브를 틀고 있는 상태에서 넘길 때, 동영상 정지 처리.
+ */
+
+import React, { lazy, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import {FaTrash} from 'react-icons/fa'
@@ -7,16 +14,17 @@ import "swiper/swiper.scss"
 import "./Body.css"
 import axios from 'axios'
 
-// keyword 저장
-
 const keywordArray = [];
 const apiData = [];
 let cnt = 0;
 
 
+
 const BodyContainer = styled.div`
   margin-top: 80px;
   width:100%;
+  height : auto;
+  min-height: 1200px;
   color:${({Color})=>(Color === 1 ? "black" : "white")};
   transition: 0.3s ease-in-out;
 `
@@ -39,6 +47,9 @@ const Icon = `
   &:hover{
       scale: 1.2;
   }
+  @media screen and (max-width:476px){
+    font-size: 2rem;
+  }
 `
 
 const PlusIcon = styled(AiOutlinePlusSquare)`
@@ -46,11 +57,15 @@ const PlusIcon = styled(AiOutlinePlusSquare)`
 `
 
 const TrashIcon = styled(FaTrash)`
+  padding-left: 10px;
   ${Icon};
 `
 
 const KeywordInput = styled.input`
   font-size: 1.5rem;
+  @media screen and (max-width: 476px){
+    font-size: 1.2rem;
+  }
 `
 
 const ListWrapper = styled.div`
@@ -58,7 +73,8 @@ const ListWrapper = styled.div`
   padding-top:30px;
 `
 const Text = styled.div`
-
+  display: flex;
+  align-items: center;
 `
 
 const Title = styled.h1`
@@ -72,7 +88,7 @@ const Body = ({bgColor}) => {
   const [params, setParams] = useState({
     key:process.env.REACT_APP_YOUTUBE_API_KEY,
     part: 'snippet',
-    maxResults: 1,
+    maxResults: 10,
     q: '',
     type: 'video',
     videoDuration:'medium',
@@ -80,14 +96,21 @@ const Body = ({bgColor}) => {
     videoSyndicated:'true',
   });
   axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3';
-
+  /**
+   * keyword를 keyword 배열에 저장하고, 파라미터에 키워드 추가.
+   */
   const setVideo = () => {
-    keywordArray.push(input);
-    let copy = {...params};
-    copy.q = input;
-    setParams({...copy});
+    if(input != ''){
+      keywordArray.push(input);
+      let copy = {...params};
+      copy.q = input;
+      setParams({...copy});
+    }
   }
-
+  /**
+   * 로컬 스토리지에 저장된 데이터를 삭제
+   * @param {number} index 추가된 키워드의 위치
+   */
   const removeData = (index) =>{
     localStorage.removeItem(`keyword${index}`);
     localStorage.removeItem(`keywordData${index}`);
@@ -96,22 +119,14 @@ const Body = ({bgColor}) => {
     apiData.splice(index,1);
     setShow((show)=>{
       let copy = show.filter((show)=>show === true);
-      console.log(copy);
-      console.log(cnt);
       copy[cnt-1] = false;
       cnt = cnt-1;
       return copy; 
     })
-   
-    
   }
-
-  useEffect(()=>{
-    console.log(apiData);
-    console.log(keywordArray);
-    console.log(show);
-  },[show])
-
+  /**
+   * axios를 통해 받아온 데이터를 로컬 스토리지와 apiData에 저장
+   */
   async function fetchData(){
     await axios.get('/search', {params})
     .then((res)=>{
@@ -119,14 +134,14 @@ const Body = ({bgColor}) => {
       localStorage.setItem(`keywordData${cnt}`, JSON.stringify(res.data.items));
       localStorage.setItem(`keyword${cnt}`, JSON.stringify(input));
       localStorage.setItem('count', JSON.stringify(cnt+1));
+      setShow((show)=>{
+        let copy = [...show, false];
+        copy[cnt] = true;
+        ++cnt;
+        return copy;
+      });
     })
     .catch(err=>console.log(err));
-    setShow((show)=>{
-      let copy = [...show, false];
-      copy[cnt] = true;
-      ++cnt;
-      return copy;
-    });
   }
 
   useEffect(()=>{
@@ -134,7 +149,9 @@ const Body = ({bgColor}) => {
       fetchData();
     }
   }, [params])
-
+  /**
+   * 처음 렌더링 될 때, 로컬스토리지에 저장된 데이터를 불러옴
+   */
   useEffect(()=>{
     let count = JSON.parse(localStorage.getItem('count'));
     if(count != 0){
@@ -184,7 +201,7 @@ const Body = ({bgColor}) => {
                     <Swiper
                     spaceBetween={30}
                     slidesPerView={"auto"}
-                    slidesPerGroup={4}
+                    slidesPerGroup={1}
                     loop={true}
                     breakpoints={{
                       0:{
@@ -194,7 +211,7 @@ const Body = ({bgColor}) => {
                         slidesPerView:2,
                       },
                       1280:{
-                        slidesPerView: 4,
+                        slidesPerView: 3,
                         spaceBetween:50
                       }
                     }}
@@ -204,8 +221,7 @@ const Body = ({bgColor}) => {
                         apiData[index].map((apiData, index)=>{
                           return(
                               <SwiperSlide key={index}>
-                                <iframe src={`https://www.youtube.com/embed/${apiData.id.videoId}`} title={apiData.snippet.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} style={{ width:"100%",
-              height:"100%", objectFit:'contain'}}></iframe>
+                                <iframe src={`https://www.youtube.com/embed/${apiData.id.videoId}`} title={apiData.snippet.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}  loading={lazy} style={{width:'100%', height:'80%'}}></iframe>
                               </SwiperSlide>
                           )
                         })
