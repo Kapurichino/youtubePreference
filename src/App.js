@@ -5,7 +5,9 @@ import Body from './components/Body/Body';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import ScrollTop from './components/ScrollTop';
+import Progressbar from './components/Progressbar';
 import * as Scroll from 'react-scroll';
+import { ProgressBar } from 'react-bootstrap';
 
 const Container = styled.div`
   width:100%;
@@ -25,6 +27,7 @@ function App() {
   return (
     <>
       {/* {console.log(open)} */}
+      <Progressbar/>
       <ScrollTop scroll={scroll}/>
       <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
       <Container BgColor={bgColor}>
