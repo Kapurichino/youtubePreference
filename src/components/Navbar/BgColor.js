@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const ButtonGroup = styled.div`
     width: 150px;
-    height: 45px;
+    height: 50px;
     border-radius: 10px;
     overflow: hidden;   
 `

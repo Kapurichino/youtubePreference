@@ -30,7 +30,7 @@ const BodyContainer = styled.div`
   margin-top: 80px;
   width:100%;
   height : auto;
-  min-height: 1200px;
+  min-height: 1600px;
   color:${({Color})=>(Color === 1 ? "black" : "white")};
   transition: 0.3s ease-in-out;
 `
@@ -47,7 +47,7 @@ const KeyWord = styled.div`
 `
 
 const Icon = `
-  font-size: 2.5rem;
+  font-size: 3rem;
   transition: 0.3s ease-in-out;
   cursor: pointer;
   &:hover{
@@ -68,7 +68,7 @@ const TrashIcon = styled(FaTrash)`
 `
 
 const KeywordInput = styled.input`
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   @media screen and (max-width: 476px){
     font-size: 1.2rem;
   }
@@ -84,12 +84,11 @@ const Text = styled.div`
 `
 
 const Title = styled.h1`
-  display: inline;
+  font-size: 3rem;
 `
 
 
-const Body = ({bgColor}) => {
-  const [input, setInput] = useState("");
+const Body = ({clicked, bgColor, input, setInput}) => {
   const [show, setShow] = useState([false]);
   const [params, setParams] = useState({
     key:process.env.REACT_APP_YOUTUBE_API_KEY,
@@ -105,7 +104,7 @@ const Body = ({bgColor}) => {
   /**
    * keyword를 keyword 배열에 저장하고, 파라미터에 키워드 추가.
    */
-  const setVideo = () => {
+   const setVideo = () => {
     if(input != ''){
       keywordArray.push(input);
       let copy = {...params};
@@ -113,6 +112,13 @@ const Body = ({bgColor}) => {
       setParams({...copy});
     }
   }
+  
+  useEffect(()=>{
+    if (clicked != 0){
+      setVideo();
+    }
+  },[clicked])
+  
   /**
    * 로컬 스토리지에 저장된 데이터를 삭제
    * @param {number} index 추가된 키워드의 위치
@@ -227,7 +233,7 @@ const Body = ({bgColor}) => {
                       760:{
                         slidesPerView:2,
                       },
-                      1280:{
+                      1280:{                               
                         slidesPerView: 3,
                         spaceBetween:50
                       }

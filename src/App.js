@@ -19,6 +19,8 @@ function App() {
   // const [input, setInput] = useState("");
   const bgData = JSON.parse(localStorage.getItem('bgColor'));
   const [bgColor, setBgColor] = useState(bgData);
+  const [clicked, setClicked] = useState(0);
+  const [input, setInput] = useState("");
   let scroll = Scroll.animateScroll;
   useEffect(()=>{
     localStorage.setItem('bgColor', JSON.stringify(bgColor));
@@ -29,11 +31,11 @@ function App() {
       {/* {console.log(open)} */}
       <Progressbar/>
       <ScrollTop scroll={scroll}/>
-      <Navbar bgColor={bgColor} setBgColor={setBgColor}/>
+      <Navbar clicked={clicked} setClicked={setClicked} bgColor={bgColor} setBgColor={setBgColor} setInput={setInput}/>
       <Container BgColor={bgColor}>
         {/* {open === true ? <KeyWordModal setOpen={setOpen} setInput={setInput}/> : null} */}  
         {/* <Header/> */}
-        <Body bgColor={bgColor}/>
+        <Body clicked={clicked} bgColor={bgColor} input={input} setInput={setInput}/>
         <Footer/>
       </Container>
     </>

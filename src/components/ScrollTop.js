@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 const UpScroll = styled(FaChevronCircleUp)`
     position:fixed;
+    z-index: 10;
     bottom:5%;
     right:3%;
     opacity: 0.5;
