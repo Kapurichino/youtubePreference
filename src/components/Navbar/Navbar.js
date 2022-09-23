@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import styled from 'styled-components'
 import BgColor from './BgColor'
@@ -48,7 +48,7 @@ const Icon = `
 `
 
 const KeyWord = styled.div`
-  display: flex;
+  display: ${({show})=>(show ? 'flex' : 'none')};
   align-items: center;
   margin-right: 50px;
 `
@@ -64,20 +64,21 @@ const PlusIcon = styled(AiOutlinePlusSquare)`
   color:${({color})=>(color === 1 ? "white":"black")};
 `
 
-const Navbar = ({bgColor, setBgColor, setInput, clicked, setClicked})=> {
+const Navbar = ({bgColor, setBgColor, setInput, clicked, setClicked, navSearchBar})=> {
+
   
+
   return (
     <>
       <NavbarContainer navColor={bgColor}>
         <NavbarWrapper>
           <NavbarName color={bgColor}>Kapurichino</NavbarName>
           <Search>
-            <KeyWord>
+            <KeyWord show={navSearchBar}>
               <KeywordInput placeholder=' Input Keyword' type="text" onChange={(e)=>{setInput(e.target.value)}}/>
               <PlusIcon color={bgColor} onClick={()=>{
                 setClicked(clicked+1);       
-              }}/>
-              
+              }}/>  
             </KeyWord>
             <BgColor bgColor={bgColor} setBgColor={setBgColor}/>
           </Search>

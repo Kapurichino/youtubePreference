@@ -5,7 +5,7 @@
  * 3. 스와이퍼에서 유튜브를 틀고 있는 상태에서 넘길 때, 동영상 정지 처리.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { AiOutlinePlusSquare } from 'react-icons/ai'
 import {FaTrash} from 'react-icons/fa'
@@ -88,7 +88,7 @@ const Title = styled.h1`
 `
 
 
-const Body = ({clicked, bgColor, input, setInput}) => {
+const Body = ({setNavSearchBar, clicked, bgColor, input, setInput}) => {
   const [show, setShow] = useState([false]);
   const [params, setParams] = useState({
     key:process.env.REACT_APP_YOUTUBE_API_KEY,
@@ -150,6 +150,7 @@ const Body = ({clicked, bgColor, input, setInput}) => {
   async function fetchData(){
     await axios.get('/search', {params})
     .then((res)=>{
+
       apiData.push(res.data.items); 
       localStorage.setItem(`keywordData${cnt}`, JSON.stringify(res.data.items));
       localStorage.setItem(`keyword${cnt}`, JSON.stringify(input));
@@ -169,10 +170,25 @@ const Body = ({clicked, bgColor, input, setInput}) => {
       fetchData();
     }
   }, [params])
+
+  const searchRef = useRef();
   /**
-   * 처음 렌더링 될 때, 로컬스토리지에 저장된 데이터를 불러옴
+   * 1. searchbar의 위치를 관찰. 뷰포인트에서 사라지면 navbar에 생성.
+   * 2. 처음 렌더링 될 때, 로컬스토리지에 저장된 데이터를 불러옴
    */
   useEffect(()=>{
+    const observer =  new IntersectionObserver((entries) =>{ 
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){
+          setNavSearchBar(false);
+        }
+        else {
+          setNavSearchBar(true);
+        }
+      })
+    } ,{root:null, rootMargin:"", threshold:1});
+    observer.observe(searchRef.current);
+
     let count = JSON.parse(localStorage.getItem('count'));
     if(count != 0){
       for(let x=0; x<count; x++){
@@ -187,7 +203,6 @@ const Body = ({clicked, bgColor, input, setInput}) => {
           });
         }
       }
-     
     }
   },[])
   
@@ -204,7 +219,7 @@ const Body = ({clicked, bgColor, input, setInput}) => {
           <Text>
             <Title>키워드 추가</Title>
           </Text>
-          <KeyWord>
+          <KeyWord ref={searchRef}>
             <KeywordInput type="text" onChange={(e)=>{setInput(e.target.value)}}/>
             <PlusIcon onClick={()=>{
               setVideo();       
